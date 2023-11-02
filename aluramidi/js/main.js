@@ -34,7 +34,7 @@
 //   document.querySelector("#som_tecla_tom").play();
 // });
 
-const listaDeTeclas = document.querySelectorAll(".tecla");
+// const listaDeTeclas = document.querySelectorAll(".tecla");
 
 // listaDeTeclas[0].addEventListener("click", () => {
 //   document.querySelector("#som_tecla_pom").play();
@@ -54,17 +54,46 @@ const listaDeTeclas = document.querySelectorAll(".tecla");
 //   contador++;
 // }
 
-for (let contador = 0; contador < listaDeTeclas.length; contador++) {
-  const tecla = listaDeTeclas[contador];
-  const classeTecla = tecla.classList[1];
-  const idAudio = `#som_${classeTecla}`;
-  tecla.addEventListener("click", () => {
-    document.querySelector(idAudio).play();
-  });
+function tocaSom(seletorAudio) {
+  const elemento = document.querySelector(seletorAudio);
+
+  if (elemento === null) {
+    // alert("Elemento não encontrado")
+    console.log("Elemento não encontrado")
+  }
+
+  if (elemento != null) {
+    if (elemento.localName === "audio") {
+      elemento.play();
+    }
+  }
+
 }
 
-// for (let i = 0; i < listaDeTeclas.length; i++) {
-//   listaDeTeclas[i].addEventListener("click", () => {
-//     document.querySelector("#som_tecla_pom").play();
-//   });
-// }
+const listaDeTeclas = document.querySelectorAll(".tecla");
+
+for (let contador = 0; contador < listaDeTeclas.length; contador++) {
+  const tecla = listaDeTeclas[contador];
+  
+  const classeTecla = tecla.classList[1];
+  
+  const idAudio = `#som_${classeTecla}`;
+  
+  tecla.addEventListener("click", () => {
+    tocaSom(idAudio);
+  });
+  
+  /* quando a tecla estiver abaixada */
+  tecla.onkeydown = (evento) => {
+    // console.log(evento.code);
+    if (evento.code == "Space" || evento.code == "Enter" || evento.code == "NumpadEnter") {
+      tecla.classList.add("ativa");
+    }
+    // tecla.classList.toggle("ativa");
+  }
+
+  /* quando a tecla estiver levantada */
+  tecla.onkeyup = () => {
+    tecla.classList.remove("ativa");
+  }
+}
